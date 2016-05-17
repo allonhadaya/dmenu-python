@@ -2,18 +2,18 @@ import re
 from subprocess import PIPE, Popen
 from sys import version_info
 
-
+# determine the string type for this version of python
 if version_info[0] == 3:
     _string_types = str,
 else:
     _string_types = basestring,
-
 
 # used to match the usage error message
 _usage = re.compile('usage:', re.I)
 
 
 class DmenuError(Exception):
+    '''The base class for dmenu errors.'''
     pass
 
 
