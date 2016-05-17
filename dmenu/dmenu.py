@@ -2,6 +2,8 @@ import re
 from subprocess import PIPE, Popen
 from sys import version_info
 
+from .errors import DmenuCommandError, DmenuUsageError
+
 # determine the string type for this version of python
 if version_info[0] == 3:
     _string_types = str,
@@ -10,26 +12,6 @@ else:
 
 # used to match the usage error message
 _usage = re.compile('usage:', re.I)
-
-
-class DmenuError(Exception):
-    '''The base class for dmenu errors.'''
-    pass
-
-
-class DmenuCommandError(DmenuError):
-    def __init__(self, command, error):
-        super(DmenuCommandError, self).__init__(
-            'The provided dmenu command could not be used (%s): %s' % (
-                command,
-                error))
-
-
-class DmenuUsageError(DmenuError):
-    def __init__(self, args, usage):
-        super(DmenuUsageError, self).__init__(
-            "This version of dmenu does not support your usage: %s\n\n%s" %
-            (args, usage))
 
 
 class Dmenu(object):
@@ -47,7 +29,7 @@ class Dmenu(object):
             foreground=None,
             background_selected=None,
             foreground_selected=None):
-        '''dmenu is a dynamic menu for X, originally designed for dwm. It manages large numbers of user-defined menu items efficiently.
+        '''
 
         Args:
             command (Optional[str]): path to the dmenu command.
@@ -61,35 +43,6 @@ class Dmenu(object):
             foreground (Optional[str]): defines the normal foreground color.
             background_selected (Optional[str]): defines the selected background color.
             foreground_selected (Optional[str]): defines the selected foreground color.
-
-        Examples:
-
-            >>> from dmenu import Dmenu
-
-            >>> dmenu = Dmenu()
-            >>> dmenu.version
-            'dmenu-4.5, \xc2\xa9 2006-2012 dmenu engineers, see LICENSE for details'
-
-            >>> dmenu.select(['a', 'b', 'c'], prompt='pick a letter:')
-            >>> # <user selects a>
-            'a'
-
-            >>> dmenu.select(['a', 'b', 'c'])
-            >>> # <user hits escape>
-            None
-
-            >>> dmenu.select(['a', 'b', 'c'])
-            >>> # <user types their own selection d>
-            'd'
-
-            >>> dmenu = Dmenu(monitor=2)
-            >>> # <let's assume the installed version of dmenu does not support the monitor argument>
-            >>> dmenu.select(['a', 'b', 'c'])
-            Traceback (most recent call last):
-                DmenuUsageError: This version of dmenu does not support your usage: ['dmenu', '-m', '2']
-
-                usage: dmenu [-b] [-f] [-i] [-l lines] [-p prompt] [-fn font]
-                             [-nb color] [-nf color] [-sb color] [-sf color] [-v]
         '''
 
         # do the argument types check out?
@@ -125,7 +78,7 @@ class Dmenu(object):
         '''The dmenu command's version message.
 
         Raises:
-            DmenuCommandError: the dmenu command could not provide a version.
+            DmenuCommandError
         '''
 
         if self._version is None:
@@ -150,11 +103,11 @@ class Dmenu(object):
             prompt (Optional[str]): defines the prompt to be displayed to the left of the input field.
 
         Raises:
-            DmenuCommandError: the dmenu command failed.
-            DmenuUsageError: the dmenu command does not support your usage.
+            DmenuCommandError
+            DmenuUsageError
 
         Returns:
-            None if user escapes selection; Ohterwise, a string which may or may not be one of the presented items.
+            The user selected item string, their own typed selection, or None if the user hit escape.
         '''
 
         assert prompt is None or isinstance(prompt, _string_types), 'prompt must be a string'
