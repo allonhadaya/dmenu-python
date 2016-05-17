@@ -27,7 +27,6 @@ class Dmenu(object):
             background_selected=None,
             foreground_selected=None):
         '''
-
         Args:
             command (Optional[str]): path to the dmenu command.
             bottom (Optional[bool]): dmenu appears at the bottom of the screen.
@@ -41,8 +40,6 @@ class Dmenu(object):
             background_selected (Optional[str]): defines the selected background color.
             foreground_selected (Optional[str]): defines the selected foreground color.
         '''
-
-        # do the argument types check out?
         assert isinstance(command, _string_types), 'command must be a string'
         assert bottom is None or isinstance(bottom, bool), 'bottom must be a bool'
         assert fast is None or isinstance(fast, bool), 'fast must be a bool'
@@ -67,7 +64,7 @@ class Dmenu(object):
         self.background_selected = background_selected
         self.foreground_selected = foreground_selected
 
-        # version will be filled lazily before the first call
+        # _version will be filled lazily
         self._version = None
 
     @property
@@ -104,7 +101,7 @@ class Dmenu(object):
             DmenuUsageError
 
         Returns:
-            The user selected item string, their own typed selection, or None if the user hit escape.
+            The user's selected item, their own typed item, or None if they hit escape.
         '''
 
         assert prompt is None or isinstance(prompt, _string_types), 'prompt must be a string'
