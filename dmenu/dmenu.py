@@ -2,8 +2,6 @@ import re
 from subprocess import PIPE, Popen
 from sys import version_info
 
-from errors import DmenuCommandError, DmenuUsageError
-
 # determine the string type for this version of python
 if version_info[0] == 3:
     _string_types = str,
@@ -11,7 +9,32 @@ else:
     _string_types = basestring,
 
 
+class DmenuError(Exception):
+    '''The base class for dmenu errors.'''
+    pass
+
+
+class DmenuCommandError(DmenuError):
+    '''The dmenu command failed.'''
+
+    def __init__(self, args, error):
+        super(DmenuCommandError, self).__init__(
+            'The provided dmenu command could not be used (%s): %s' % (
+                args,
+                error))
+
+
+class DmenuUsageError(DmenuError):
+    '''The dmenu command does not support your usage.'''
+
+    def __init__(self, args, usage):
+        super(DmenuUsageError, self).__init__(
+            "This version of dmenu does not support your usage (%s):\n\n%s" %
+            (args, usage))
+
+
 class Dmenu(object):
+    '''The primary interface.'''
 
     def __init__(
             self,
@@ -77,20 +100,22 @@ class Dmenu(object):
 
         if self._version is None:
 
+            args = [self.command, '-v']
+
             try:
-                proc = Popen([self.command, '-v'], universal_newlines=True, stdout=PIPE, stderr=PIPE)
+                proc = Popen(args, universal_newlines=True, stdout=PIPE, stderr=PIPE)
             except OSError as err:
-                raise DmenuCommandError(self.command, err)
+                raise DmenuCommandError(args, err)
 
             if proc.wait() != 0:
-                raise DmenuCommandError(self.command, proc.stderr.read())
+                raise DmenuCommandError(args, proc.stderr.read())
 
             self._version = proc.stdout.read().rstrip('\n')
 
         return self._version
 
-    def select(self, items, prompt=None):
-        '''Present the user with items to select from.
+    def show(self, items, prompt=None):
+        '''Present a dmenu to the user. May be called multile times with different arguments.
 
         Args:
             items (Iterable[str]): the items to present to the user.
@@ -111,7 +136,7 @@ class Dmenu(object):
         try:
             proc = Popen(args, universal_newlines=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         except OSError as err:
-            raise DmenuCommandError(self.command, err)
+            raise DmenuCommandError(args, err)
 
         with proc.stdin:
             for item in items:
@@ -133,7 +158,7 @@ class Dmenu(object):
             raise DmenuUsageError(args, stderr)
 
         # other error
-        raise DmenuCommandError(self.command, stderr)
+        raise DmenuCommandError(args, stderr)
 
     def _args(self, prompt):
 
