@@ -131,7 +131,7 @@ class Dmenu(object):
         if self._version is None:
 
             try:
-                proc = Popen([self.command, '-v'], stdout=PIPE, stderr=PIPE)
+                proc = Popen([self.command, '-v'], universal_newlines=True, stdout=PIPE, stderr=PIPE)
             except OSError as err:
                 raise DmenuCommandError(self.command, err)
 
@@ -162,7 +162,7 @@ class Dmenu(object):
         args = self._args(prompt)
 
         try:
-            proc = Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            proc = Popen(args, universal_newlines=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         except OSError as err:
             raise DmenuCommandError(self.command, err)
 
