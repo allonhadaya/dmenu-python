@@ -2,7 +2,7 @@ import re
 from subprocess import PIPE, Popen
 from sys import version_info
 
-from .errors import DmenuCommandError, DmenuUsageError
+from errors import DmenuCommandError, DmenuUsageError
 
 # determine the string type for this version of python
 if version_info[0] == 3:
