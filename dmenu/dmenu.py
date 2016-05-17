@@ -10,9 +10,6 @@ if version_info[0] == 3:
 else:
     _string_types = basestring,
 
-# used to match the usage error message
-_usage = re.compile('usage:', re.I)
-
 
 class Dmenu(object):
 
@@ -135,7 +132,7 @@ class Dmenu(object):
             return None
 
         # usage error
-        if _usage.match(stderr):
+        if re.match('usage', stderr, re.I):
             raise DmenuUsageError(args, stderr)
 
         # other error
