@@ -10,7 +10,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='dmenu',
-    version='1.0',
+    version='0.1',
     description='A dmenu wrapper.',
     long_description=long_description,
     url='https://github.com/allonhadaya/dmenu',
