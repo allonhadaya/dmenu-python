@@ -1,4 +1,1 @@
-include README.rst
-include setup.py
-include tox.ini
-include dmenu/*.py
+include LICENSE README.rst dmenu/*.py
