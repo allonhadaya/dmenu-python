@@ -12,3 +12,4 @@ A python wrapper for `dmenu <http://tools.suckless.org/dmenu/>`_.
 
 * `source <https://github.com/allonhadaya/dmenu-python>`_
 * `docs <http://dmenu.readthedocs.io>`_
+* `pypi <https://pypi.python.org/pypi/dmenu>`_
