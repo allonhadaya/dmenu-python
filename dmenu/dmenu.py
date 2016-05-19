@@ -1,9 +1,9 @@
 import re
-from subprocess import PIPE, Popen
-from sys import version_info
+import subprocess
+import sys
 
 # determine the string type for this version of python
-if version_info[0] == 3:
+if sys.version_info[0] == 3:
     _string_types = str,
 else:
     _string_types = basestring,
@@ -103,7 +103,11 @@ class Dmenu(object):
             args = [self.command, '-v']
 
             try:
-                proc = Popen(args, universal_newlines=True, stdout=PIPE, stderr=PIPE)
+                proc = subprocess.Popen(
+                    args,
+                    universal_newlines=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE)
             except OSError as err:
                 raise DmenuCommandError(args, err)
 
@@ -134,7 +138,12 @@ class Dmenu(object):
         args = self._args(prompt)
 
         try:
-            proc = Popen(args, universal_newlines=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            proc = subprocess.Popen(
+                args,
+                universal_newlines=True,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE)
         except OSError as err:
             raise DmenuCommandError(args, err)
 

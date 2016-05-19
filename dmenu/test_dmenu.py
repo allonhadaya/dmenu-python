@@ -1,9 +1,9 @@
-from unittest import TestCase
+import unittest
 
 from dmenu import Dmenu, DmenuCommandError
 
 
-class TestDmenu(TestCase):
+class TestDmenu(unittest.TestCase):
 
     def test_no_arguments(self):
         Dmenu()
@@ -80,9 +80,9 @@ class TestDmenu(TestCase):
         self.assertRaises(AssertionError, Dmenu, foreground_selected=['not', 'a', 'string'])
 
     def test_version_bad_command(self):
-        dmenu = Dmenu(command='not_actually_the_dmenu_command')
+        menu = Dmenu(command='not_actually_the_dmenu_command')
 
         def version():
-            dmenu.version
+            menu.version
 
         self.assertRaises(DmenuCommandError, version)
