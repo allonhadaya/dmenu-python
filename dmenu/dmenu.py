@@ -149,7 +149,12 @@ class Dmenu(object):
 
         with proc.stdin:
             for item in items:
-                assert isinstance(item, _string_types), "all items must be strings"
+                try:
+                    assert isinstance(item, _string_types), "all items must be strings"
+                except AssertionError:
+                    # we should kill the menu since their selection will not be respected
+                    proc.terminate()
+                    raise
                 proc.stdin.write('%s\n' % item)
 
         if proc.wait() == 0:
