@@ -7,10 +7,9 @@ dmenu
 
 ----
 
-.. autoclass:: dmenu.Dmenu
-    :members:
+.. autofunction:: dmenu.show
 
-    .. automethod:: __init__
+.. autofunction:: dmenu.version
 
 .. autoclass:: dmenu.DmenuError
     :members:
