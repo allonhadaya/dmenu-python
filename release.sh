@@ -8,12 +8,6 @@ rm -rf build dist
 # build
 python setup.py sdist bdist_wheel
 
-# register
-twine register \
-  --username allonhadaya \
-  --password `pass show pypi` \
-  dist/*.tar.gz
-
 # upload
 twine upload \
   --skip-existing \
