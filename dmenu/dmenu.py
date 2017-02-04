@@ -156,7 +156,7 @@ def show(
         args.extend(('-p', prompt))
 
     if font is not None:
-        args.extend(('-f', font))
+        args.extend(('-fn', font))
 
     if background is not None:
         args.extend(('-nb', background))
