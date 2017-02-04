@@ -10,6 +10,6 @@ A python wrapper for `dmenu <http://tools.suckless.org/dmenu/>`_.
 
     > pip install dmenu
 
-* `github <https://github.com/allonhadaya/dmenu-python>`_
 * `readthedocs <http://dmenu.readthedocs.io>`_
+* `github <https://github.com/allonhadaya/dmenu-python>`_
 * `pypi <https://pypi.python.org/pypi/dmenu>`_
