@@ -62,6 +62,7 @@ def version(command='dmenu'):
 def show(
         items,
         command='dmenu',
+        command_args=[],
         bottom=None,
         fast=None,
         case_insensitive=None,
@@ -78,6 +79,7 @@ def show(
     Args:
         items (Iterable[str]): defines the menu items being presented to the user. items should not contain the newline character.
         command (Optional[str]): defines the path to the dmenu executable. Defaults to 'dmenu'.
+        command_args (Iterable[str]): generic way to add arguments to 'command', e.g. to use command="rofi" and command_args=["-dmenu"]
         bottom (Optional[bool]): dmenu appears at the bottom of the screen.
         fast (Optional[bool]): dmenu grabs the keyboard before reading stdin. This is faster, but will lock up X until stdin reaches end-of-file.
         case_insensitive (Optional[bool]): dmenu matches menu items case insensitively.
@@ -135,7 +137,7 @@ def show(
 
     # construct args
 
-    args = [command]
+    args = [command] + command_args
 
     if bottom:
         args.append('-b')
